@@ -10,7 +10,7 @@ const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.inner
 
 // todo: add camera position, orientation to control menu
 
-// todo: add bounding box (shifted by means)
+// todo: add bounding box (shifted by means) // I guess not
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -67,6 +67,34 @@ function rotateGamut() {
 const options = { gamut: currentGamut}
 const gui = new GUI();
 gui.add(options, "gamut", ["Cones", "Monochromatic", "Oz", "Expanded Oz"]).onChange( value => { updateGamut(value);} );
+
+const cameraFolder = gui.addFolder('Camera');
+
+// Position controls
+const minPosition = -10;
+const maxPosition = 10;
+
+controls.minDistance = minPosition;
+controls.maxDistance = maxPosition;
+
+cameraFolder.add(camera.position, 'x', minPosition, maxPosition).name('Position X').onChange(updateCameraPosition).listen();
+cameraFolder.add(camera.position, 'y', minPosition, maxPosition).name('Position Y').onChange(updateCameraPosition).listen();
+cameraFolder.add(camera.position, 'z', minPosition, maxPosition).name('Position Z').onChange(updateCameraPosition).listen();
+
+function updateCameraPosition() {
+  camera.position.x = Math.max(minPosition, Math.min(maxPosition, camera.position.x));
+  camera.position.y = Math.max(minPosition, Math.min(maxPosition, camera.position.y));
+  camera.position.z = Math.max(minPosition, Math.min(maxPosition, camera.position.z));
+}
+
+// Rotation controls
+const rotationFolder = cameraFolder.addFolder('Rotation');
+rotationFolder.add(camera.rotation, 'x', -Math.PI, Math.PI).name('Rotation X').step(0.01).listen();
+rotationFolder.add(camera.rotation, 'y', -Math.PI, Math.PI).name('Rotation Y').step(0.01).listen();
+rotationFolder.add(camera.rotation, 'z', -Math.PI, Math.PI).name('Rotation Z').step(0.01).listen();
+
+
+
 
 scene.add(conesPoints);
 
