@@ -135,7 +135,7 @@ function generatePoints(geometry, vertices) {
 const boundaryGamutGeometry = new THREE.BufferGeometry();
 const boundaryVertices = [];
 
-for (let lambda = 380; lambda <= 700; lambda++) {
+for (let lambda = 200; lambda <= 800; lambda++) {
   const [sCone, mCone, lCone] = coneQuantalEfficiency(lambda);
   boundaryVertices.push(sCone, mCone,  lCone);
 
